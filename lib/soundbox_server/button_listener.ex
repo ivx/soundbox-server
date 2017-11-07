@@ -11,12 +11,16 @@ defmodule SoundboxServer.ButtonListener do
   end
 
   def handle_info(:open_tty, _) do
-    "/dev/ttyUSB0"
-    |> File.stream!
-    |> Enum.each(fn id ->
-      IO.inspect(id)
-    end)
-
+    port = Port.open({:spawn, "cat /dev/ttyUSB0"}, [:binary])
+    receive_from_button(port)
     {:noreply, nil}
+  end
+
+  defp receive_from_button(port) do
+    receive do
+      {^port, {:data, id <> "\n\n"}} -> 
+        IO.inspect(id)
+    end
+    receive_from_button(port)
   end
 end
