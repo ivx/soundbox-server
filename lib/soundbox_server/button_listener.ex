@@ -1,14 +1,12 @@
 defmodule SoundboxServer.ButtonListener do
   use GenServer
 
-  require Logger
-
   def start_link do
     GenServer.start_link(__MODULE__, :ok, [])
   end
 
   def init(:ok) do
-    port = Port.open({:spawn, device()}, [:binary])
+    port = Port.open({:spawn, command()}, [:binary])
     Process.send_after(self(), :check_port_alive, 1000)
 
     {:ok, port}
@@ -21,13 +19,13 @@ defmodule SoundboxServer.ButtonListener do
   def handle_info(:check_port_alive, port) do
     new_port = if Port.info(port),
       do: port,
-      else: Port.open({:spawn, device()}, [:binary])
+      else: Port.open({:spawn, command()}, [:binary])
 
     Process.send_after(self(), :check_port_alive, 1000)
     {:noreply, new_port}
   end
 
-  defp device do
-    Application.get_env(:soundbox_server, :button_tty, "cat /dev/null")
+  defp command do
+    "cat " <> Application.get_env(:soundbox_server, :button_tty, "/dev/null")
   end
 end
