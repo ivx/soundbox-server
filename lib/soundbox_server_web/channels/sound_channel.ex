@@ -2,7 +2,7 @@ defmodule SoundboxServerWeb.SoundChannel do
   use SoundboxServerWeb, :channel
 
   def join("sound:lobby", payload, socket) do
-    {:ok, socket}
+    {:ok, get_buttons(), socket}
   end
 
   # Channels can be used in a request/response fashion
