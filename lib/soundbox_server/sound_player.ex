@@ -23,9 +23,10 @@ defmodule SoundboxServer.SoundPlayer do
   end
 
   def handle_info(:check_port_alive, port) do
-    new_port = if Port.info(port),
-      do: port,
-      else: Port.open({:spawn, device()}, [:binary])
+    new_port =
+      if Port.info(port),
+        do: port,
+        else: Port.open({:spawn, device()}, [:binary])
 
     Process.send_after(self(), :check_port_alive, 1000)
     {:noreply, new_port}

@@ -15,7 +15,7 @@ defmodule SoundboxServer.ButtonListener do
   end
 
   def handle_info({port, {:data, id}}, port) do
-    button = id |> String.trim |> String.to_integer
+    button = id |> String.trim() |> String.to_integer()
     SoundPlayer.play(SoundboxServer.SoundPlayer, button)
     {:noreply, port}
   rescue
@@ -23,9 +23,10 @@ defmodule SoundboxServer.ButtonListener do
   end
 
   def handle_info(:check_port_alive, port) do
-    new_port = if Port.info(port),
-      do: port,
-      else: Port.open({:spawn, command()}, [:binary])
+    new_port =
+      if Port.info(port),
+        do: port,
+        else: Port.open({:spawn, command()}, [:binary])
 
     Process.send_after(self(), :check_port_alive, 1000)
     {:noreply, new_port}

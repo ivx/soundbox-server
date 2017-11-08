@@ -14,7 +14,7 @@ defmodule SoundboxServer.Application do
       # worker(SoundboxServer.Worker, [arg1, arg2, arg3]),
       worker(SoundboxServer.ButtonListener, []),
       worker(SoundboxServer.Storage, [[name: SoundboxServer.Storage]]),
-      worker(SoundboxServer.SoundPlayer, [[name: SoundboxServer.SoundPlayer]]),
+      worker(SoundboxServer.SoundPlayer, [[name: SoundboxServer.SoundPlayer]])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
