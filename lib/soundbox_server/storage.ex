@@ -28,8 +28,12 @@ defmodule SoundboxServer.Storage do
   end
 
   def handle_call({:update_title, id, title}, _from, state) do
-    [{^id, _, file}] = :dets.lookup(:mp3, id)
+    result =
+      case :dets.lookup(:mp3, id) do
+        [{^id, _, file}] -> :dets.insert(:mp3, [{id, title, file}])
+        [] -> :dets.insert_new(:mp3, [{id, title, <<>>}])
+      end
 
-    {:reply, :dets.insert(:mp3, [{id, title, file}]), state}
+    {:reply, result, state}
   end
 end
