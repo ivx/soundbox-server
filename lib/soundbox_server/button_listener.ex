@@ -17,6 +17,9 @@ defmodule SoundboxServer.ButtonListener do
   def handle_info({port, {:data, id}}, port) do
     button = id |> String.trim |> String.to_integer
     SoundPlayer.play(SoundboxServer.SoundPlayer, button)
+  rescue
+    _ -> nil
+  after
     {:noreply, port}
   end
 
