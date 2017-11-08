@@ -17,8 +17,10 @@ defmodule SoundboxServer.SoundPlayer do
   end
 
   def handle_cast({:play, key}, port) do
-    [{_, _, file}] = :dets.lookup(:mp3, key)
-    Port.command(port, file)
+    case :dets.lookup(:mp3, key) do
+      [{_, _, file}] -> Port.command(port, file)
+      _ -> nil
+    end
     {:noreply, port}
   end
 
