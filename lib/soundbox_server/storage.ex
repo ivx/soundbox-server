@@ -1,6 +1,8 @@
 defmodule SoundboxServer.Storage do
   use GenServer
 
+  alias SoundboxServer.Normalizer
+
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, nil, opts)
   end
@@ -23,7 +25,7 @@ defmodule SoundboxServer.Storage do
   end
 
   def handle_cast({:save, key, title, data}, state) do
-    :ok = :dets.insert(:mp3, {key, title, data})
+    :ok = :dets.insert(:mp3, {key, title, Normalizer.normalize(data)})
     {:noreply, state}
   end
 
