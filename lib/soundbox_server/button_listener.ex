@@ -1,6 +1,8 @@
 defmodule SoundboxServer.ButtonListener do
   use GenServer
 
+  alias SoundboxServer.SoundPlayer
+
   def start_link do
     GenServer.start_link(__MODULE__, :ok, [])
   end
@@ -13,6 +15,8 @@ defmodule SoundboxServer.ButtonListener do
   end
 
   def handle_info({port, {:data, id}}, port) do
+    button = id |> String.trim |> String.to_integer
+    SoundPlayer.play(SoundboxServer.SoundPlayer, button)
     {:noreply, port}
   end
 
