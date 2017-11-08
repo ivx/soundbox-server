@@ -12,7 +12,7 @@ defmodule SoundboxServer.SoundPlayer do
     {:ok, port}
   end
 
-  def play(pid, key) do
+  def play(pid \\ __MODULE__, key) do
     GenServer.cast(pid, {:play, key})
   end
 

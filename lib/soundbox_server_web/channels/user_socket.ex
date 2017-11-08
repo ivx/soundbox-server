@@ -2,7 +2,7 @@ defmodule SoundboxServerWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "sound:*", SoundboxServerWeb.SoundChannel
+  channel("sound:*", SoundboxServerWeb.SoundChannel)
 
   ## Transports
   transport(:websocket, Phoenix.Transports.WebSocket)

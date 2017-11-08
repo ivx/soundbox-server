@@ -14,11 +14,11 @@ defmodule SoundboxServer.Storage do
     :dets.close(:mp3)
   end
 
-  def save(pid, {key, title, data}) do
+  def save(pid \\ __MODULE__, {key, title, data}) do
     GenServer.cast(pid, {:save, key, title, data})
   end
 
-  def update_title(pid, id, title) do
+  def update_title(pid \\ __MODULE__, id, title) do
     GenServer.call(pid, {:update_title, id, title})
   end
 

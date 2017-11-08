@@ -12,15 +12,24 @@ defmodule SoundboxServerWeb.SoundChannel do
   end
 
   def handle_in("push_button", %{"id" => id}, socket) do
-    SoundboxServer.SoundPlayer.play(SoundboxServer.SoundPlayer, id)
+    SoundboxServer.SoundPlayer.play(id)
     {:reply, :ok, socket}
   end
 
   def handle_in("edit_button", %{"id" => id, "title" => title}, socket) do
-    result =
-      SoundboxServer.Storage.update_title(SoundboxServer.Storage, id, title)
+    result = SoundboxServer.Storage.update_title(id, title)
 
     {:reply, result, socket}
+  end
+
+  def handle_in(
+        "upload_sound",
+        %{"id" => id, "title" => title, "file" => file},
+        socket
+      ) do
+    SoundboxServer.Storage.save({id, title, Base.decode64(file)})
+
+    {:reply, :ok, :socket}
   end
 
   defp get_buttons do
