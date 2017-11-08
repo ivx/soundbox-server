@@ -13,6 +13,7 @@ defmodule SoundboxServer.Application do
       # Start your own worker by calling: SoundboxServer.Worker.start_link(arg1, arg2, arg3)
       # worker(SoundboxServer.Worker, [arg1, arg2, arg3]),
       worker(SoundboxServer.ButtonListener, []),
+      worker(SoundboxServer.SoundPlayer, []),
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

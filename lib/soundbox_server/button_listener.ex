@@ -18,7 +18,7 @@ defmodule SoundboxServer.ButtonListener do
 
   defp receive_from_button(port) do
     receive do
-      {^port, {:data, id}} -> 
+      {^port, {:data, id}} ->
         IO.inspect(id)
     end
     receive_from_button(port)

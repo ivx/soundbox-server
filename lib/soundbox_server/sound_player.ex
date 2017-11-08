@@ -10,12 +10,12 @@ defmodule SoundboxServer.SoundPlayer do
     {:ok, port}
   end
 
-  def play(pid, {port, key}) do
+  def play(pid, key) do
     GenServer.cast(pid, {:play, key})
   end
 
   def handle_cast({:play, key}, port) do
-    [{_, file}] = :ets.lookup(:mp3, key)
+    [{_, file}] = :dets.lookup(:mp3, key)
     Port.command(port, file)
     {:noreply, port}
   end
