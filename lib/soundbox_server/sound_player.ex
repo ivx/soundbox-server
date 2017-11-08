@@ -1,8 +1,8 @@
 defmodule SoundboxServer.SoundPlayer do
   use GenServer
 
-  def start_link do
-    GenServer.start_link(__MODULE__, nil, [])
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, nil, opts)
   end
 
   def init(nil) do
@@ -15,7 +15,7 @@ defmodule SoundboxServer.SoundPlayer do
   end
 
   def handle_cast({:play, key}, port) do
-    [{_, file}] = :dets.lookup(:mp3, key)
+    [{_, _, file}] = :dets.lookup(:mp3, key)
     Port.command(port, file)
     {:noreply, port}
   end
