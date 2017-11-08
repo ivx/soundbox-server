@@ -23,7 +23,7 @@ defmodule SoundboxServer.Storage do
   end
 
   def handle_cast({:save, key, title, data}, state) do
-    true = :dets.insert_new(:mp3, {key, title, data})
+    :ok = :dets.insert(:mp3, {key, title, data})
     {:noreply, state}
   end
 
