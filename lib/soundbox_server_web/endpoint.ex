@@ -11,8 +11,7 @@ defmodule SoundboxServerWeb.Endpoint do
     Plug.Static,
     at: "/",
     from: :soundbox_server,
-    gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    gzip: false
   )
 
   # Code reloading can be explicitly enabled under the

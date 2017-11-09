@@ -14,7 +14,6 @@ defmodule SoundboxServerWeb.Router do
   end
 
   scope "/", SoundboxServerWeb do
-    # Use the default browser stack
     pipe_through(:browser)
 
     get("/", PageController, :index)
