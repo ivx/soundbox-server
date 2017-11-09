@@ -18,7 +18,7 @@ defmodule SoundboxServerWeb.SoundChannel do
 
   def handle_in("edit_button", %{"id" => id, "title" => title}, socket) do
     result = SoundboxServer.Storage.update_title(id, title)
-    broadcast!(socket, "buttons_updated", %{data: SoundboxServer.Buttons.all()})
+    broadcast_buttons_updated(socket)
 
     {:reply, result, socket}
   end
@@ -29,11 +29,16 @@ defmodule SoundboxServerWeb.SoundChannel do
         socket
       ) do
     result = SoundboxServer.Storage.save({id, title, Base.decode64!(file)})
+    broadcast_buttons_updated(socket)
 
     {:reply, result, socket}
   end
 
   defp get_buttons do
     %{data: SoundboxServer.Buttons.all()}
+  end
+
+  defp broadcast_buttons_updated(socket) do
+    broadcast!(socket, "buttons_updated", %{data: SoundboxServer.Buttons.all()})
   end
 end
