@@ -15,10 +15,8 @@ use Mix.Config
 # which you typically run after static files are built.
 config :soundbox_server, SoundboxServerWeb.Endpoint,
   http: [port: 80],
-  load_from_system_env: true,
   url: [host: "soundbox", port: 80],
-  check_origin: false,
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  check_origin: false
 
 # Do not print debug messages in production
 config :logger, level: :info
