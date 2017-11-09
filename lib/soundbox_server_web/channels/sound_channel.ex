@@ -27,9 +27,9 @@ defmodule SoundboxServerWeb.SoundChannel do
         %{"id" => id, "title" => title, "file" => file},
         socket
       ) do
-    SoundboxServer.Storage.save({id, title, Base.decode64(file)})
+    SoundboxServer.Storage.save({id, title, Base.decode64!(file)})
 
-    {:reply, :ok, :socket}
+    {:reply, :ok, socket}
   end
 
   defp get_buttons do
