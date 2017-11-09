@@ -1,7 +1,7 @@
 defmodule SoundboxServerWeb.SoundChannel do
   use SoundboxServerWeb, :channel
 
-  def join("sound:lobby", payload, socket) do
+  def join("sound:lobby", _payload, socket) do
     {:ok, get_buttons(), socket}
   end
 
@@ -18,6 +18,7 @@ defmodule SoundboxServerWeb.SoundChannel do
 
   def handle_in("edit_button", %{"id" => id, "title" => title}, socket) do
     result = SoundboxServer.Storage.update_title(id, title)
+    broadcast!(socket, "buttons_updated", %{data: SoundboxServer.Buttons.all()})
 
     {:reply, result, socket}
   end
