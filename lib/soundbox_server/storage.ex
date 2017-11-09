@@ -17,16 +17,16 @@ defmodule SoundboxServer.Storage do
   end
 
   def save(pid \\ __MODULE__, {key, title, data}) do
-    GenServer.cast(pid, {:save, key, title, data})
+    GenServer.call(pid, {:save, key, title, data})
   end
 
   def update_title(pid \\ __MODULE__, id, title) do
     GenServer.call(pid, {:update_title, id, title})
   end
 
-  def handle_cast({:save, key, title, data}, state) do
-    :ok = :dets.insert(:mp3, {key, title, Normalizer.normalize(data)})
-    {:noreply, state}
+  def handle_call({:save, key, title, data}, _from, state) do
+    result = :dets.insert(:mp3, {key, title, Normalizer.normalize(data)})
+    {:reply, result, state}
   end
 
   def handle_call({:update_title, id, title}, _from, state) do
