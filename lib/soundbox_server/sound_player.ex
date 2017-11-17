@@ -6,32 +6,24 @@ defmodule SoundboxServer.SoundPlayer do
   end
 
   def init(nil) do
-    port = Port.open({:spawn, device()}, [:binary])
-    Process.send_after(self(), :check_port_alive, 1000)
-
-    {:ok, port}
+    {:ok, nil}
   end
 
   def play(pid \\ __MODULE__, key) do
     GenServer.cast(pid, {:play, key})
   end
 
-  def handle_cast({:play, key}, port) do
-    case :dets.lookup(:mp3, key) do
-      [{_, _, file}] -> Port.command(port, file)
-      _ -> nil
+  def handle_cast({:play, key}, state) do
+    port = Port.open({:spawn, device()}, [:binary])
+    try do
+      case :dets.lookup(:mp3, key) do
+        [{_, _, file}] -> Port.command(port, file)
+        _ -> nil
+      end
+      {:noreply, state}
+    after
+      Port.close(port)
     end
-    {:noreply, port}
-  end
-
-  def handle_info(:check_port_alive, port) do
-    new_port =
-      if Port.info(port),
-        do: port,
-        else: Port.open({:spawn, device()}, [:binary])
-
-    Process.send_after(self(), :check_port_alive, 1000)
-    {:noreply, new_port}
   end
 
   defp device do
